@@ -7,6 +7,7 @@ Collection of Data Driven Tools
     WW
     DYee/mm
     DYtt
+    Wg
     
     
 Input trees are latinos format ones
