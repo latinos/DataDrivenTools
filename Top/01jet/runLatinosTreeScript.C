@@ -1,4 +1,4 @@
-void runLatinosTreeScript(Double_t luminosity    = 19.468,
+void runLatinosTreeScript(Double_t luminosity    = 19.365,
 			  Int_t    jetChannel    = 0,
 			  TString  flavorChannel = "EMu",
 			  TString  theSample     = "WJetsFakes_Total",

@@ -35,7 +35,7 @@ enum {SILENT, NOTE, DEBUG};
 //------------------------------------------------------------------------------
 void runXS(Int_t    njet          = 0,
 	   Int_t    ichannel      = All,
-	   Double_t luminosity    = 19468,
+	   Double_t luminosity    = 19365,
 	   TString  cutLevel      = "TopTagging",
 	   Bool_t   useNM1        = false,
 	   Int_t    printLevel    = NOTE,

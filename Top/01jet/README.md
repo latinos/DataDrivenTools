@@ -16,7 +16,7 @@
  ##
  ##    njet       = {0, 1, 2, 3}
  ##    ichannel   = {-1, All, SF, OF, MuMu, EE, EMu, MuE}
- ##    luminosity = 19468
+ ##    luminosity = 19365
  ##    printLevel = {SILENT, NOTE, DEBUG}
  ##    drawTheXS  = false
  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -25,12 +25,12 @@
 
  ## To compute the WW cross section removing the "XYZ" cut
  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- #root -l -b -q runXS.C\(0,All,19468,\"XYZ\",1\)
+ #root -l -b -q runXS.C\(0,All,19365,\"XYZ\",1\)
 
 
  ## To compute the WW cross section at "XYZ" cut level
  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- #root -l -b -q runXS.C\(0,All,19468,\"XYZ\",0\)
+ #root -l -b -q runXS.C\(0,All,19365,\"XYZ\",0\)
 
 
  ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

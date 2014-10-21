@@ -135,7 +135,7 @@ const TString NM1Label[nLevels] = {
 //------------------------------------------------------------------------------
 void drawDistributions(Int_t    njet       = 0,
 		       TString  channel    = "All",
-		       Double_t luminosity = 19468,
+		       Double_t luminosity = 19365,
 		       TString  format     = "png",
 		       Bool_t   drawRatio  = true,
 		       Bool_t   dataDriven = true,
