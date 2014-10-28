@@ -30,7 +30,6 @@ void Top(Double_t &yield,
 	 Bool_t    useDataDriven,
 	 Int_t     printLevel)
 {
-  std::cout<<"Input parameters: "<<yield<<", "<<statError<<", "<<systError<<", "<<topScaleFactor<<", "<<dyScaleFactor<<", "<<njet<<", "<<channel<<", "<<directory<<", "<<useDataDriven<<", "<<printLevel<<std::endl;
   TString path = Form("%s/%djet/%s/", directory.Data(), njet, channel.Data());
 
   TFile* inputTT   = new TFile(path + "TTbar.root");  
@@ -98,34 +97,42 @@ void Top(Double_t &yield,
   TH1F* hNTopTaggedEventsControlRegionWW = (TH1F*) inputWW->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionWW             = (TH1F*) inputWW->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsWW               = (TH1F*) inputWW->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingWW                    = (TH1F*) inputWW->Get("hWTopTagging");
 
   TH1F* hNTopTaggedEventsControlRegionWZ = (TH1F*) inputWZ->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionWZ             = (TH1F*) inputWZ->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsWZ               = (TH1F*) inputWZ->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingWZ                    = (TH1F*) inputWZ->Get("hWTopTagging");
 
   TH1F* hNTopTaggedEventsControlRegionWG = (TH1F*) inputWG->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionWG             = (TH1F*) inputWG->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsWG               = (TH1F*) inputWG->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingWG                    = (TH1F*) inputWG->Get("hWTopTagging");
 
   TH1F* hNTopTaggedEventsControlRegionH125 = (TH1F*) inputH125->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionH125             = (TH1F*) inputH125->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsH125               = (TH1F*) inputH125->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingH125                    = (TH1F*) inputH125->Get("hWTopTagging");
 
   TH1F* hNTopTaggedEventsControlRegionZZ = (TH1F*) inputZZ->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionZZ             = (TH1F*) inputZZ->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsZZ               = (TH1F*) inputZZ->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingZZ                    = (TH1F*) inputZZ->Get("hWTopTagging");
 
   TH1F* hNTopTaggedEventsControlRegionWj = (TH1F*) inputWj->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionWj             = (TH1F*) inputWj->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsWj               = (TH1F*) inputWj->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingWj                    = (TH1F*) inputWj->Get("hWTopTagging");
 
   TH1F* hNTopTaggedEventsControlRegionZjnt = (TH1F*) inputZjnt->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionZjnt		   = (TH1F*) inputZjnt->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsZjnt               = (TH1F*) inputZjnt->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingZjnt                    = (TH1F*) inputZjnt->Get("hWTopTagging");
 
   TH1F* hNTopTaggedEventsControlRegionDATA = (TH1F*) inputData->Get("hNTopTaggedTopControlRegion");
   TH1F* hNTopControlRegionDATA             = (TH1F*) inputData->Get("hNTopControlRegion");
   TH1F* hTopTaggedEventsData               = (TH1F*) inputData->Get("hTopTaggedEvents");
+  TH1F* hTopTaggingDATA                    = (TH1F*) inputData->Get("hWTopTagging");
 
 
   // Yields in (topTagged_1jet && bveto_nj30 == 0)
@@ -509,6 +516,25 @@ void Top(Double_t &yield,
     printf(" NControl (data top-tagged events)            &   %4.0f\n",                     NTaggedDATA);
     printf(" FinalEstimation (data-driven top estimate)   & %6.1f $\\pm$ %4.1f\n",          yield,               statError);
     printf(" alpha (FinalEstimation/NControl)             & %6.19f $\\pm$ %4.19f\n",        yield/NTaggedDATA,   sqrt(statError*statError/(yield*yield)-1./NTaggedDATA)*yield/NTaggedDATA);
+    
+    printf(" ---------------data/MC correction factors----------------------------------\n");
+  
+    Double_t NTT   = hTopTaggingTT  ->GetBinContent(2);
+    Double_t NTW   = hTopTaggingTW  ->GetBinContent(2) * twScaleFactor;
+    Double_t NWW   = hTopTaggingWW  ->GetBinContent(2);
+    Double_t NWZ   = hTopTaggingWZ  ->GetBinContent(2);
+    Double_t NWG   = hTopTaggingWG  ->GetBinContent(2);
+    Double_t NH125 = hTopTaggingH125->GetBinContent(2);
+    Double_t NZZ   = hTopTaggingZZ  ->GetBinContent(2);
+    Double_t NWj   = hTopTaggingWj  ->GetBinContent(2);
+    Double_t NZjnt = hTopTaggingZjnt->GetBinContent(2) * dyScaleFactor;
+    Double_t NData = hTopTaggingDATA->GetBinContent(2);
+    
+    Double_t scaleFactorWW = (NData - topScaleFactor*(NTT + NTW) - NWZ - NWG - NH125 - NZZ - NWj - dyScaleFactor*NZjnt)/NWW;
+    
+    printf(" Top: data/MC                         & %6.2f\n",         topScaleFactor);
+    printf(" Z: data/MC                           & %6.2f\n",         dyScaleFactor);
+    printf(" WW: data/MC                          & %6.2f\n",         scaleFactorWW);
   }
 }
 

@@ -82,7 +82,6 @@ void DY(Double_t &yield,
 	Int_t     printLevel,
 	Bool_t    drawR = false)
 {
-  std::cout<<"Input parameters: "<<yield<<", "<<statError<<", "<<systError<<", "<<scaleFactor<<", "<<njet<<", "<<channel<<", "<<directory<<", "<<useDataDriven<<", "<<printLevel<<", "<<drawR<<std::endl;
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //
   // Input files

@@ -6,10 +6,10 @@
 #include "TSystem.h"
 #include "TTree.h"
 
-
 const UInt_t nProcesses = 12;
 
-enum {iData, iWW, iWZ, iZZ, iWg, itt, itW, iWj, iDY, iDYtau, iZgamma, iH125};
+//enum {iData, iWW, iWZ, iZZ, iWg, itt, itW, iWj, iDY, iDYtau, iZgamma, iH125};
+enum {iData, iWW, iH125, iDY, iDYtau, itt, itW, iWZ, iZZ, iWg, iZgamma, iWj};
 
 TFile* input[nProcesses];
 
@@ -50,7 +50,7 @@ Double_t systError[nProcesses];
 
 systError[iData] = 0.0;
 
-// syst. / yield for the 0-jet bin
+// syst. / yield for the 0-jet bin. These numbers are for the WW study. We need to calculate systematic uncertainty for the case ggH
 systError[itt]     = 21.7 / 166.0;
 systError[itW]     = 21.7 / 166.0;
 systError[iWW]     = 67.7 / 939.5;
@@ -77,11 +77,17 @@ Bool_t   _setLogy;
 
 // Scale factors
 //------------------------------------------------------------------------------
-Double_t ttScale[] = {1.10, 1.10, 1.10, 1.10};
-Double_t tWScale[] = {1.10, 1.10, 1.10, 1.10};
-Double_t WWScale[] = {1.00, 0.92, 1.02, 1.08};
-Double_t ZjScale[] = {3.70, 4.20, 1.80, 4.00};
+// WW Scale factors
+//Double_t ttScale[] = {1.10, 1.10, 1.10, 1.10};
+//Double_t tWScale[] = {1.10, 1.10, 1.10, 1.10};
+//Double_t WWScale[] = {1.00, 0.92, 1.02, 1.08};
+//Double_t ZjScale[] = {3.70, 4.20, 1.80, 4.00};
 
+//ggH Scale factors: 0- and 1-jet bins
+Double_t ttScale[] = {1.11, 1.11};
+Double_t tWScale[] = {1.11, 1.11};
+Double_t WWScale[] = {0.78, 0.50};
+Double_t ZjScale[] = {4.59, 3.03};
 
 // Levels
 //------------------------------------------------------------------------------
@@ -172,16 +178,42 @@ void drawDistributions(Int_t    njet       = 0,
 
   // Top distributions
   //----------------------------------------------------------------------------
-  if (0) {
+  if (1) {
     DrawHistogram("hbTagDisNTopTaggedTopControlRegion", "2^{nd} jet TCHE", 5, 1, "NULL", -999, 999, false);
     DrawHistogram("hbTagDisNTopControlRegion",          "2^{nd} jet TCHE", 5, 1, "NULL", -999, 999, false);
     DrawHistogram("hbTagDisTopTaggedEvents",            "2^{nd} jet TCHE", 5, 1, "NULL", -999, 999, false);
+
+    DrawHistogram("hbTagDisNTopTaggedTopControlRegion_channel", "channel", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisNTopControlRegion_channel",          "channel", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisTopTaggedEvents_channel",            "channel", 1, 1, "NULL", -999, 999, false);
+
+    DrawHistogram("hbTagDisNTopTaggedTopControlRegion_dphill", "#Delta#phi_{ll} [^{0}]", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisNTopControlRegion_dphill",          "#Delta#phi_{ll} [^{0}]", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisTopTaggedEvents_dphill",            "#Delta#phi_{ll} [^{0}]", 1, 1, "NULL", -999, 999, false);
+
+    DrawHistogram("hbTagDisNTopTaggedTopControlRegion_jetpt1", "p_{T}^{jet, max} [GeV/c]", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisNTopControlRegion_jetpt1",          "p_{T}^{jet, max} [GeV/c]", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisTopTaggedEvents_jetpt1",            "p_{T}^{jet, max} [GeV/c]", 1, 1, "NULL", -999, 999, false);
+
+    _setLogy    = true;
+    DrawHistogram("hbTagDisNTopTaggedTopControlRegion_jetmva1", "1st jet JetMVA", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisNTopControlRegion_jetmva1",          "1st jet JetMVA", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisTopTaggedEvents_jetmva1",            "1st jet JetMVA", 1, 1, "NULL", -999, 999, false);
+    _setLogy    = false;
+
+    DrawHistogram("hbTagDisNTopTaggedTopControlRegion_softtche", "TCHE b-Tag (15<p_{T}^{jet}<30 GeV/c)", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisNTopControlRegion_softtche",          "TCHE b-Tag (15<p_{T}^{jet}<30 GeV/c)", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisTopTaggedEvents_softtche",            "TCHE b-Tag (15<p_{T}^{jet}<30 GeV/c)", 1, 1, "NULL", -999, 999, false);
+
+    DrawHistogram("hbTagDisNTopTaggedTopControlRegion_hardtche", "TCHE b-Tag (p_{T}^{jet}>30 GeV/c)", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisNTopControlRegion_hardtche",          "TCHE b-Tag (p_{T}^{jet}>30 GeV/c)", 1, 1, "NULL", -999, 999, false);
+    DrawHistogram("hbTagDisTopTaggedEvents_hardtche",            "TCHE b-Tag (p_{T}^{jet}>30 GeV/c)", 1, 1, "NULL", -999, 999, false);
   }
 
 
   // PAS distributions
   //----------------------------------------------------------------------------
-  if (1) {
+  if (0) {
     DrawHistogram("hPtLepton1TopTagging",       "p_{T}^{max}",                 5, 0, "GeV",  0, 160);
     DrawHistogram("hPtLepton2TopTagging",       "p_{T}^{min}",                 5, 0, "GeV", 15,  80);
     DrawHistogram("hPtDiLeptonTopTagging",      "p_{T}^{#font[12]{ll}}",       5, 0, "GeV", 40, 120);
@@ -259,7 +291,8 @@ void DrawHistogram(TString  hname,
 		   Double_t xmax         =  999,
 		   Bool_t   moveOverflow = true)
 {
-  TCanvas* canvas = new TCanvas(hname, hname, 550, 720);
+  //TCanvas* canvas = new TCanvas(hname, hname, 550, 720);
+  TCanvas* canvas = new TCanvas(hname, hname, 800, 800);
 
   TPad* pad1 = new TPad("pad1", "pad1", 0, 0.3, 1, 1.0);
   TPad* pad2 = new TPad("pad2", "pad2", 0, 0.0, 1, 0.3); 
@@ -337,8 +370,9 @@ void DrawHistogram(TString  hname,
       binValue += binContent;
       binError += (hist[ip]->GetBinError(ibin) * hist[ip]->GetBinError(ibin));
 
-      if (_dataDriven)
-	binError += (systError[ip]*binContent * systError[ip]*binContent);
+      //We need to calculate systematic uncertainty for ggH case
+//      if (_dataDriven)
+//	binError += (systError[ip]*binContent * systError[ip]*binContent);
     }
     
     binError = sqrt(binError);
@@ -437,7 +471,7 @@ void DrawHistogram(TString  hname,
   if (_njet >= 2) channelLabel += "-jets)";
 
   DrawTLatex(0.185, 0.975, 0.05, 13, channelLabel.Data());
-  DrawTLatex(0.940, 0.983, 0.05, 33, Form("L = %.1f fb^{-1}", _luminosity/1e3));
+  DrawTLatex(0.940, 0.983, 0.05, 33, Form("L = %.3f fb^{-1}", _luminosity/1e3));
 
 
   //----------------------------------------------------------------------------
@@ -486,7 +520,7 @@ void DrawHistogram(TString  hname,
 
   canvas->cd();
 
-  TString suffixLogy = (_setLogy) ? "_log" : "";
+  TString suffixLogy = (_setLogy) ? "_Log" : "_Lin";
 
   canvas->SaveAs(Form("%s/%s%s.%s",
 		      _output.Data(),
