@@ -86,7 +86,7 @@ Bool_t   _setLogy;
 //ggH Scale factors: 0- and 1-jet bins
 Double_t ttScale[] = {1.11, 1.11};
 Double_t tWScale[] = {1.11, 1.11};
-Double_t WWScale[] = {0.78, 0.50};
+Double_t WWScale[] = {1.08, 1.02};
 Double_t ZjScale[] = {4.59, 3.03};
 
 // Levels
