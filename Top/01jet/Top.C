@@ -530,7 +530,7 @@ void Top(Double_t &yield,
     Double_t NZjnt = hTopTaggingZjnt->GetBinContent(2) * dyScaleFactor;
     Double_t NData = hTopTaggingDATA->GetBinContent(2);
     
-    Double_t scaleFactorWW = (NData - topScaleFactor*(NTT + NTW) - NWZ - NWG - NH125 - NZZ - NWj - dyScaleFactor*NZjnt)/NWW;
+    Double_t scaleFactorWW = (NData - topScaleFactor*(NTT + NTW) - NWZ - NWG - NH125 - NZZ - NWj - NZjnt)/NWW;
     
     printf(" Top: data/MC                         & %6.2f\n",         topScaleFactor);
     printf(" Z: data/MC                           & %6.2f\n",         dyScaleFactor);
